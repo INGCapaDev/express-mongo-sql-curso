@@ -1,11 +1,23 @@
 import express from 'express';
 import cors from 'cors';
+import dotenv from 'dotenv';
+dotenv.config();
+import { dbConnect } from './config/mongo.js';
 
 const app = express();
 
 app.use(cors());
 
-const port = 3000;
+/**
+ * Here call routes! 🤖
+ */
+import { router } from './routes/index.js';
+// TODO localhost/api/______
+app.use('/api', router);
 
-app.listen(port);
-console.log(`Server listen on port ${port}`);
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Server listen on port ${port}`);
+});
+
+dbConnect();
