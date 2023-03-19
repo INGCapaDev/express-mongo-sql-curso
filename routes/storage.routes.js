@@ -1,9 +1,10 @@
 import express from 'express';
 export const storageRoutes = express.Router();
-// import storageController from '../controllers/storage.js';
+import storageController from '../controllers/storage.js';
+
+// * Middlewares
+import { uploadMiddleware } from '../utils/handleStorage.js';
 
 // TODO https://localhost/api/storage GET, POST, DELETE, PUT
 
-storageRoutes.post('/', (req, res) => {
-  res.send({ a: 1 });
-});
+storageRoutes.post('/', uploadMiddleware.single('myfile'), storageController);
