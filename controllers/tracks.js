@@ -9,12 +9,14 @@ const getItems = async (req, res) => {
   const data = await models.tracksModel.find({});
   res.send({ data });
 };
+
 /**
  * Get detail
  * @param {*} req
  * @param {*} res
  */
 const getItem = (req, res) => {};
+
 /**
  * Insert registry
  * @param {*} req
@@ -25,12 +27,14 @@ const createItems = async (req, res) => {
   const data = await models.tracksModel.create(body);
   res.send({ data });
 };
+
 /**
  * Update registry
  * @param {*} req
  * @param {*} res
  */
 const updateItems = (req, res) => {};
+
 /**
  * Delete registry
  * @param {*} req

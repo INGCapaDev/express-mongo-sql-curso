@@ -7,4 +7,8 @@ import { uploadMiddleware } from '../utils/handleStorage.js';
 
 // TODO https://localhost/api/storage GET, POST, DELETE, PUT
 
-storageRoutes.post('/', uploadMiddleware.single('myfile'), storageController);
+storageRoutes.post(
+  '/',
+  uploadMiddleware.single('myfile'),
+  storageController.createItems
+);
