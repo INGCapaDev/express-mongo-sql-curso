@@ -19,5 +19,7 @@ fs.readdirSync(PATH_ROUTES).filter((file) => {
 */
 
 import { tracksRoutes } from './tracks.routes.js';
+import { storageRoutes } from './storage.routes.js';
 
 router.use('/tracks', tracksRoutes);
+router.use('/storage', storageRoutes);

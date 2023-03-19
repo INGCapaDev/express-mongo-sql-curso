@@ -1,10 +1,8 @@
 import express from 'express';
 export const tracksRoutes = express.Router();
+import tracksController from '../controllers/tracks.js';
 
-// TODO https://localhost/tracks GET, POST, DELETE, PUT
+// TODO https://localhost/api/tracks GET, POST, DELETE, PUT
 
-tracksRoutes.get('/', (req, res) => {
-  const data = ['hola', 'mundo'];
-
-  res.send({ data });
-});
+tracksRoutes.get('/', tracksController.getItems);
+tracksRoutes.post('/', tracksController.createItems);

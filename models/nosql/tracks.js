@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-storage;
+
 const TrackScheme = new mongoose.Schema(
   {
     name: { type: String },
@@ -25,4 +25,4 @@ const TrackScheme = new mongoose.Schema(
   }
 );
 
-export const tracksModel = mongoose.model('tracks', TrackScheme);
+export const tracksModelMongo = mongoose.model('tracks', TrackScheme);
