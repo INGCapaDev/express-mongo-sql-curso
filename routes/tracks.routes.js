@@ -1,6 +1,8 @@
 import express from 'express';
 export const tracksRoutes = express.Router();
 import tracksController from '../controllers/tracks.js';
+
+// TODO Middlewares and Validators
 import {
   validatorIsValidId,
   validatorIsValidItem,
@@ -9,22 +11,22 @@ import {
 // TODO https://localhost/api/tracks GET, POST, DELETE, PUT
 
 /**
- * Get Tracks
+ * * Get Tracks
  */
 tracksRoutes.get('/', tracksController.getItems);
 
 /**
- * Get Detail Track
+ * * Get Detail Track
  */
 tracksRoutes.get('/:id', validatorIsValidId, tracksController.getItem);
 
 /**
- * Create Track
+ * * Create Track
  */
 tracksRoutes.post('/', validatorIsValidItem, tracksController.createItems);
 
 /**
- * Update Track
+ * * Update Track
  */
 tracksRoutes.put(
   '/:id',
@@ -34,6 +36,6 @@ tracksRoutes.put(
 );
 
 /**
- * Delete Track
+ * ! Delete Track
  */
 tracksRoutes.delete('/:id', validatorIsValidId, tracksController.deleteItems);
