@@ -1,7 +1,7 @@
 import { check } from 'express-validator';
 import { validateResults } from '../utils/handleValidator.js';
 
-export const validatorCreateItems = [
+export const validatorIsValidItem = [
   check('name').exists().notEmpty(),
   check('album').exists().notEmpty(),
   check('cover').exists().notEmpty(),
@@ -13,5 +13,10 @@ export const validatorCreateItems = [
   check('duration.start').exists().notEmpty().isNumeric(),
   check('duration.end').exists().notEmpty().isNumeric(),
   check('mediaId').exists().notEmpty().isMongoId(),
+  (req, res, next) => validateResults(req, res, next),
+];
+
+export const validatorIsValidId = [
+  check('id').exists().notEmpty().isMongoId(),
   (req, res, next) => validateResults(req, res, next),
 ];

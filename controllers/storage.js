@@ -1,4 +1,8 @@
 import { models } from '../models/index.js';
+import { handleHttpError } from '../utils/handleError.js';
+import dotenv from 'dotenv';
+dotenv.config();
+
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
 /**
@@ -7,8 +11,12 @@ const PUBLIC_URL = process.env.PUBLIC_URL;
  * @param {*} res
  */
 const getItems = async (req, res) => {
-  const data = await models.storagesModel.find({});
-  res.send({ data });
+  try {
+    const data = await models.storagesModel.find({});
+    res.send({ data });
+  } catch (error) {
+    handleHttpError(res, 'ERROR_GET_FILES');
+  }
 };
 
 /**
@@ -24,13 +32,17 @@ const getItem = (req, res) => {};
  * @param {*} res
  */
 const createItems = async (req, res) => {
-  const { body, file } = req;
-  const fileData = {
-    filename: file.filename,
-    url: `${PUBLIC_URL}/${file.filename}`,
-  };
-  const data = await models.storagesModel.create(fileData);
-  res.send({ data });
+  try {
+    const { file } = req;
+    const fileData = {
+      filename: file.filename,
+      url: `${PUBLIC_URL}/${file.filename}`,
+    };
+    const data = await models.storagesModel.create(fileData);
+    res.send({ data });
+  } catch (error) {
+    handleHttpError(res, 'ERROR_CREATE_FILE');
+  }
 };
 
 /**
