@@ -9,8 +9,9 @@ import { handleHttpError } from '../utils/handleError.js';
  */
 const getItems = async (req, res) => {
   try {
+    const user = req.user;
     const data = await models.tracksModel.find({});
-    res.send({ data });
+    res.send({ data, user });
   } catch (error) {
     handleHttpError(res, 'ERROR_GET_TRACKS');
   }

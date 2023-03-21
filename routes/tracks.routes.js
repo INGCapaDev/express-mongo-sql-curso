@@ -3,6 +3,8 @@ export const tracksRoutes = express.Router();
 import tracksController from '../controllers/tracks.js';
 
 // TODO Middlewares and Validators
+import { authMiddleware } from '../middleware/session.js';
+import { checkRol } from '../middleware/rolMiddleware.js';
 import {
   validatorIsValidId,
   validatorIsValidItem,
@@ -13,23 +15,36 @@ import {
 /**
  * * Get Tracks
  */
-tracksRoutes.get('/', tracksController.getItems);
+tracksRoutes.get('/', authMiddleware, tracksController.getItems);
 
 /**
  * * Get Detail Track
  */
-tracksRoutes.get('/:id', validatorIsValidId, tracksController.getItem);
+tracksRoutes.get(
+  '/:id',
+  authMiddleware,
+  validatorIsValidId,
+  tracksController.getItem
+);
 
 /**
  * * Create Track
  */
-tracksRoutes.post('/', validatorIsValidItem, tracksController.createItems);
+tracksRoutes.post(
+  '/',
+  authMiddleware,
+  checkRol(['Admin']),
+  validatorIsValidItem,
+  tracksController.createItems
+);
 
 /**
  * * Update Track
  */
 tracksRoutes.put(
   '/:id',
+  authMiddleware,
+  checkRol(['Admin']),
   validatorIsValidId,
   validatorIsValidItem,
   tracksController.updateItems
@@ -38,4 +53,10 @@ tracksRoutes.put(
 /**
  * ! Delete Track
  */
-tracksRoutes.delete('/:id', validatorIsValidId, tracksController.deleteItems);
+tracksRoutes.delete(
+  '/:id',
+  authMiddleware,
+  checkRol(['Admin']),
+  validatorIsValidId,
+  tracksController.deleteItems
+);
