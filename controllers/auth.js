@@ -38,9 +38,7 @@ const registerController = async (req, res) => {
 const loginController = async (req, res) => {
   try {
     req = matchedData(req);
-    const user = await models.usersModel
-      .findOne({ email: req.email })
-      .select('password email role name');
+    const user = await models.usersModel.findOne({ email: req.email });
     if (!user) return handleHttpError(res, 'ERROR_USER_NOT_EXISTS', 404);
 
     const hashPassword = user.get('password');

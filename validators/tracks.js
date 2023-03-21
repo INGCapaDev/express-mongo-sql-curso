@@ -12,11 +12,11 @@ export const validatorIsValidItem = [
   check('duration').exists().notEmpty(),
   check('duration.start').exists().notEmpty().isNumeric(),
   check('duration.end').exists().notEmpty().isNumeric(),
-  check('mediaId').exists().notEmpty().isMongoId(),
+  check('mediaId').exists().notEmpty(),
   (req, res, next) => validateResults(req, res, next),
 ];
 
 export const validatorIsValidId = [
-  check('id').exists().notEmpty().isMongoId(),
+  check('id').exists().notEmpty(),
   (req, res, next) => validateResults(req, res, next),
 ];

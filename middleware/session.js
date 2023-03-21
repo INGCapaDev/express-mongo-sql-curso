@@ -1,6 +1,8 @@
 import { handleHttpError } from '../utils/handleError.js';
 import { verifyToken } from '../utils/handleJwt.js';
 import { models } from '../models/index.js';
+import { getPropertiesDatabase } from '../utils/handlePropertiesEngine.js';
+const propertiesKey = getPropertiesDatabase();
 
 /**
  * * Middleware for check JWT and auth the user or decline the request.
@@ -18,11 +20,15 @@ export const authMiddleware = async (req, res, next) => {
     const token = req.headers.authorization.split(' ').pop();
     const dataToken = verifyToken(token);
 
-    if (!dataToken._id) {
-      return handleHttpError(res, 'ERROR_ID_TOKEN', 401);
+    if (!dataToken) {
+      return handleHttpError(res, 'ERROR_NOT_PAYLOAD_DATA', 401);
     }
 
-    const user = await models.usersModel.findById(dataToken._id);
+    const query = {
+      [propertiesKey.id]: dataToken[propertiesKey.id],
+    };
+
+    const user = await models.usersModel.findOne(query);
     req.user = user;
 
     next();

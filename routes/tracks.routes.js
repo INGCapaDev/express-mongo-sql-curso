@@ -33,7 +33,7 @@ tracksRoutes.get(
 tracksRoutes.post(
   '/',
   authMiddleware,
-  checkRol(['Admin']),
+  checkRol(['Admin', 'User']),
   validatorIsValidItem,
   tracksController.createItems
 );

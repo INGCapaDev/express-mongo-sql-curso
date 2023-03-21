@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
-dotenv.config();
+import { getPropertiesDatabase } from '../utils/handlePropertiesEngine.js';
+const propertiesKey = getPropertiesDatabase();
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -10,9 +10,13 @@ const JWT_SECRET = process.env.JWT_SECRET;
  */
 export const tokenSign = (user) => {
   try {
-    const sign = jwt.sign({ _id: user._id, role: user.role }, JWT_SECRET, {
-      expiresIn: '2h',
-    });
+    const sign = jwt.sign(
+      { [propertiesKey.id]: user[propertiesKey.id], role: user.role },
+      JWT_SECRET,
+      {
+        expiresIn: '2h',
+      }
+    );
     return sign;
   } catch (error) {
     return null;
