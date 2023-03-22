@@ -3,14 +3,14 @@ import { models } from '../models/index.js';
 import { handleHttpError } from '../utils/handleError.js';
 
 /**
- * Get database list
+ * * Get database list
  * @param {*} req
  * @param {*} res
  */
 const getItems = async (req, res) => {
   try {
     const user = req.user;
-    const data = await models.tracksModel.find({});
+    const data = await models.tracksModel.findAll({});
     res.send({ data, user });
   } catch (error) {
     handleHttpError(res, 'ERROR_GET_TRACKS');
@@ -18,25 +18,26 @@ const getItems = async (req, res) => {
 };
 
 /**
- * Get detail
+ * * Get detail
  * @param {*} req
  * @param {*} res
  */
 const getItem = async (req, res) => {
   try {
+    const user = req.user;
     const { id } = matchedData(req);
-    const data = await models.tracksModel.findById(id);
+    const data = await models.tracksModel.findByPk(id);
     if (!data) {
-      throw new Error();
+      return handleHttpError(res, 'ERROR_TRACK_NOT_EXISTS');
     }
-    res.send({ data });
+    res.send({ data, user });
   } catch (error) {
     handleHttpError(res, 'ERROR_GET_TRACK_DETAIL');
   }
 };
 
 /**
- * Insert registry
+ * * Insert registry
  * @param {*} req
  * @param {*} res
  */
@@ -51,22 +52,26 @@ const createItems = async (req, res) => {
 };
 
 /**
- * Update registry
+ * * Update registry
  * @param {*} req
  * @param {*} res
  */
 const updateItems = async (req, res) => {
   try {
     const { id, ...body } = matchedData(req);
-    const data = await models.tracksModel.findOneAndUpdate(id, body);
-    res.send({ data });
+    const track = await models.tracksModel.findByPk(id);
+    if (!track) {
+      return handleHttpError(res, 'ERROR_TRACK_NOT_EXISTS');
+    }
+    const data = await models.tracksModel.update(body, { where: { id: id } });
+    res.send({ data: body, message: `TRACK_UPDATE_SUCCESSFULLY_ID_${id}` });
   } catch (error) {
     handleHttpError(res, 'ERROR_UPDATE_TRACK');
   }
 };
 
 /**
- * Delete registry
+ * * Delete registry
  * @param {*} req
  * @param {*} res
  */

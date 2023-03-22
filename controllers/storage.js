@@ -10,7 +10,6 @@ import { getPropertiesDatabase } from '../utils/handlePropertiesEngine.js';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PUBLIC_URL = process.env.PUBLIC_URL;
 const MEDIA_PATH = path.join(__dirname, '../uploads');
-const propertiesKey = getPropertiesDatabase();
 
 /**
  * * Get database list
@@ -19,10 +18,9 @@ const propertiesKey = getPropertiesDatabase();
  */
 const getItems = async (req, res) => {
   try {
-    const data = await models.storagesModel.find({});
+    const data = await models.storagesModel.findAll({});
     res.send({ data });
   } catch (error) {
-    console.log(error);
     handleHttpError(res, 'ERROR_GET_FILES');
   }
 };
@@ -35,7 +33,7 @@ const getItems = async (req, res) => {
 const getItem = async (req, res) => {
   try {
     const { id } = matchedData(req);
-    const data = await models.storagesModel.findById(id);
+    const data = await models.storagesModel.findByPk(id);
     if (!data) {
       return handleHttpError(res, 'ERROR_FILE_NOT_EXISTS');
     }
@@ -60,7 +58,6 @@ const createItems = async (req, res) => {
     const data = await models.storagesModel.create(fileData);
     res.send({ data });
   } catch (error) {
-    console.log(error);
     handleHttpError(res, 'ERROR_CREATE_FILE');
   }
 };
@@ -73,12 +70,17 @@ const createItems = async (req, res) => {
 const deleteItems = async (req, res) => {
   try {
     const { id } = matchedData(req);
-    const dataFile = await models.storagesModel.findOne({
-      [propertiesKey.id]: id,
-    });
+    const dataFile = await models.storagesModel.findByPk(id);
+    if (!dataFile) {
+      return handleHttpError(res, 'ERROR_FILE_NOT_EXISTS');
+    }
     const { filename } = dataFile;
     const filePath = `${MEDIA_PATH}/${filename}`; // * Route like : /C:/.../uploads/file-3423.ext
-    await models.storagesModel.delete({ [propertiesKey.id]: id });
+    await models.storagesModel.destroy({
+      where: {
+        id: id,
+      },
+    });
     fs.unlinkSync(filePath.toString());
     const data = {
       filePath,
@@ -86,7 +88,6 @@ const deleteItems = async (req, res) => {
     };
     res.send({ data });
   } catch (error) {
-    console.log(error);
     handleHttpError(res, 'ERROR_DELETE_FILE');
   }
 };

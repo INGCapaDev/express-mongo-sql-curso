@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS tracks(
   artist_nationality VARCHAR(150) NOT NULL,
   duration_start INT NOT NULL,
   duration_end INT NOT NULL,
-  mediaId INT NOT NULL,
+  mediaId VARCHAR(150) NOT NULL,
   createdAt DATETIME DEFAULT NULL,
   updatedAt DATETIME DEFAULT NULL
 );

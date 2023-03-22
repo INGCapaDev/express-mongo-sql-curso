@@ -44,7 +44,7 @@ tracksRoutes.post(
 tracksRoutes.put(
   '/:id',
   authMiddleware,
-  checkRol(['Admin']),
+  checkRol(['Admin', 'User']),
   validatorIsValidId,
   validatorIsValidItem,
   tracksController.updateItems
